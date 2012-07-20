@@ -6,30 +6,37 @@ use GitList\Component\Git\Model\Line;
 
 class DiffLine extends Line
 {
+<<<<<<< HEAD
     protected $numNew;
     protected $numOld;
 
     public function __construct($data, $numOld, $numNew)
+=======
+    protected $numOld;
+    protected $numNew;
+
+    public function __construct($data, $numNew, $numOld)
+>>>>>>> danielgtaylor/latest-commit
     {
         parent::__construct($data);
 
         if (!empty($data)) {
             switch ($data[0]) {
                 case '@':
-                    $this->numOld = '...';
-                    $this->numNew = '...';
-                    break;
-                case '-':
-                    $this->numOld = $numOld;
-                    $this->numNew = '';
-                    break;
-                case '+':
-                    $this->numOld = '';
-                    $this->numNew = $numNew;
-                    break;
-                default:
-                    $this->numOld = $numOld;
-                    $this->numNew = $numNew;
+				    $this->setNumNew('...');
+				    $this->setNumOld('...');
+				    break;
+				case '-':
+				    $this->setNumOld($numOld);
+				    $this->setNumNew('');
+				    break;
+				case '+':
+				    $this->setNumNew($numNew);
+				    $this->setNumOld('');
+				    break;
+				default:
+				    $this->setNumOld($numOld);
+				    $this->setNumNew($numNew);
             }
         } else {
             $this->numOld = $numOld;
