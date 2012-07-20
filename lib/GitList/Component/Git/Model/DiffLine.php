@@ -6,17 +6,10 @@ use GitList\Component\Git\Model\Line;
 
 class DiffLine extends Line
 {
-<<<<<<< HEAD
     protected $numNew;
     protected $numOld;
 
     public function __construct($data, $numOld, $numNew)
-=======
-    protected $numOld;
-    protected $numNew;
-
-    public function __construct($data, $numNew, $numOld)
->>>>>>> danielgtaylor/latest-commit
     {
         parent::__construct($data);
 
