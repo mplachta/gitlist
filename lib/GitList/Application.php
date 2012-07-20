@@ -5,6 +5,7 @@ namespace GitList;
 use Silex\Application as SilexApplication;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
+use Silex\Provider\DoctrineServiceProvider;
 use GitList\Provider\GitServiceProvider;
 use GitList\Provider\RepositoryUtilServiceProvider;
 use GitList\Provider\ViewUtilServiceProvider;
@@ -41,6 +42,21 @@ class Application extends SilexApplication
             'git.repos'       => $config->get('git', 'repositories'),
             'git.hidden'      => $config->get('git', 'hidden') ? $config->get('git', 'hidden') : array(),
         ));
+		$this->register(new DoctrineServiceProvider(), array(
+			'db.options'      => array(
+				'driver'      => 'pdo_sqlite',
+				'path'        => $root . DIRECTORY_SEPARATOR . 'db/app.db',
+			),
+		));
+		// initialize database if not yet done
+		try {
+			$test = $app['db']->fetchAssoc('SELECT * FROM gitlist');
+		} catch(\PDOException $e) {
+			if($e->getCode() == 'HY000') {
+				$app['db']->executeQuery('CREATE TABLE gitlist (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, value TEXT)');
+				$app['db']->executeQuery('CREATE TABLE tags (id INTEGER PRIMARY KEY AUTOINCREMENT, repo TEXT, commitid TEXT, name TEXT)');
+			}
+		}
         $this->register(new ViewUtilServiceProvider());
         $this->register(new RepositoryUtilServiceProvider());
         $this->register(new UrlGeneratorServiceProvider());

@@ -22,6 +22,7 @@ class CommitController implements ControllerProviderInterface
             foreach ($commits as $commit) {
                 $date = $commit->getDate();
                 $date = $date->format('m/d/Y');
+				$commit->setTags($app['db']->fetchAll('SELECT * FROM tags WHERE commitid = ? AND repo = ?', array($commit->getShortHash(), $repo)));
                 $categorized[$date][] = $commit;
             }
 
@@ -44,11 +45,13 @@ class CommitController implements ControllerProviderInterface
         $route->get('{repo}/commit/{commit}/', function($repo, $commit) use ($app) {
             $repository = $app['git']->getRepository($app['git.repos'] . $repo);
             $commit = $repository->getCommit($commit);
+			$tags = $app['db']->fetchAll('SELECT * FROM tags WHERE commitid = ? AND repo = ?', array($commit->getShortHash(), $repo));
 
             return $app['twig']->render('commit.twig', array(
                 'branch'         => 'master',
                 'repo'           => $repo,
                 'commit'         => $commit,
+				'tags'           => $tags,
             ));
         })->assert('repo', '[\w-._]+')
           ->assert('commit', '[a-f0-9]+')

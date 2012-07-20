@@ -799,3 +799,6 @@ span.cm-emstrong{font-style:italic;font-weight:bold;}
 span.cm-link{text-decoration:underline;}
 div.CodeMirror span.CodeMirror-matchingbracket{color:#0f0;}
 div.CodeMirror span.CodeMirror-nonmatchingbracket{color:#f22;}
+.tag a {display:none;float:none;color:inherit;}
+.tag:hover a {display:inline;}
+.tag {margin-right: 5px;}

@@ -14,6 +14,7 @@ class Commit
     protected $commiterDate;
     protected $message;
     protected $diffs;
+	protected $tags;
 
     public function importData(array $data)
     {
@@ -145,4 +146,14 @@ class Commit
     {
         return sizeof($this->diffs);
     }
+	
+	public function setTags($tags)
+	{
+		$this->tags = $tags;
+	}
+	
+	public function getTags()
+	{
+		return $this->tags;
+	}
 }

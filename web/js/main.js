@@ -21,4 +21,9 @@ $(function () {
         var converter = new Showdown.converter();
         $('#readme-content').html(converter.makeHtml($('#readme-content').text()));
     }
+	
+	// workaround because modal is on at initialization
+	$('#addTagModal').modal({'show': false});
+	$('#addTagModal').modal('hide');
+	$('#addTagModal').addClass('fade');
 });
